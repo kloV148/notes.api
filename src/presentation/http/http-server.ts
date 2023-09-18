@@ -3,6 +3,7 @@ import type { HttpApiConfig } from '@infrastructure/config/index.js';
 import fastify from 'fastify';
 import type API from '@presentation/api.interface.js';
 import NoteRouter from '@presentation/http/router/note.js';
+import NoteSettingsRouter from '@presentation/http/router/noteSettings.js';
 import type { DomainServices } from '@domain/index.js';
 import cors from '@fastify/cors';
 import fastifyOauth2 from '@fastify/oauth2';
@@ -90,6 +91,11 @@ export default class HttpServer implements API {
      * Register all routers
      */
     await this.server.register(NoteRouter, {
+      prefix: '/note',
+      noteService: domainServices.noteService,
+      middlewares: middlewares,
+    });
+    await this.server.register(NoteSettingsRouter, {
       prefix: '/note',
       noteService: domainServices.noteService,
       middlewares: middlewares,
